@@ -10,6 +10,8 @@ import { ChainProvider } from '@cosmos-kit/react';
 import { chains, assets } from 'chain-registry';
 import { GasPrice } from '@cosmjs/stargate';
 
+import '../styles/global.css';
+
 import {
   Box,
   Toaster,

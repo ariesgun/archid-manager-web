@@ -2,7 +2,7 @@ import { Divider } from '@interchain-ui/react';
 import NoSSR from 'react-no-ssr';
 import { defaultChainName } from '@/config';
 import { Layout, WalletSection } from '@/components';
-import { RegistrySecion } from '@/components/archid/RegistrySection';
+import { RegistrySection } from '@/components/archid/RegistrySection';
 
 export default function ArchwayTestnet() {
   return (
@@ -13,7 +13,7 @@ export default function ArchwayTestnet() {
       {/* Type error: This JSX tag's 'children' prop expects a single child of type 'ReactNode', but multiple children were provided. */}
       {/* @ts-ignore */}
       <NoSSR>
-        <RegistrySecion chainName={defaultChainName} />
+        <RegistrySection chainName={defaultChainName} />
       </NoSSR>
     </Layout>
   );

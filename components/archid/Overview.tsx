@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   StakingAssetHeader,
@@ -36,7 +36,7 @@ const Overview = ({
   prices: Prices;
 }) => {
   const [isClaiming, setIsClaiming] = useState(false);
-  const { address } = useChain(chainName);
+  const { address, getCosmWasmClient } = useChain(chainName);
   const { tx } = useTx(chainName);
 
   const totalAmount = sum(balance, staked, rewards?.total ?? 0);

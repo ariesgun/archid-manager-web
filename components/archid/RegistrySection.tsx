@@ -1,12 +1,12 @@
 import { useChain } from '@cosmos-kit/react';
 import { ChainName } from 'cosmos-kit';
-import { Box, Spinner, Text } from '@interchain-ui/react';
+import { Box, Divider, Spinner, Text } from '@interchain-ui/react';
 
 import Overview from './Overview';
-// import { MyValidators } from './MyValidators';
+import { DomainsList } from './DomainsList';
 import { useStakingData, useValidatorLogos } from '@/hooks';
 
-export const RegistrySecion = ({ chainName }: { chainName: ChainName }) => {
+export const RegistrySection = ({ chainName }: { chainName: ChainName }) => {
   const { isWalletConnected } = useChain(chainName);
   const { data, isLoading, refetch } = useStakingData(chainName);
   const { data: logos, isLoading: isFetchingLogos } = useValidatorLogos(
@@ -46,19 +46,12 @@ export const RegistrySecion = ({ chainName }: { chainName: ChainName }) => {
             chainName={chainName}
             prices={data.prices}
           />
+          
+          <Divider height="0.1px" mt="$12" mb="$14" />
 
-          {/* {data.myValidators.length > 0 && (
-            <MyValidators
-              myValidators={data.myValidators}
-              allValidators={data.allValidators}
-              balance={data.balance}
-              updateData={refetch}
-              unbondingDays={data.unbondingDays}
-              chainName={chainName}
-              logos={logos}
-              prices={data.prices}
-            />
-          )} */}
+          <DomainsList
+            chainName={chainName}
+          />
 
           
         </>
