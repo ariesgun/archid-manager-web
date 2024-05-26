@@ -121,6 +121,7 @@ function Dependency({ name, desc, link }: Project) {
 export function Footer() {
   return (
     <>
+      <Divider height="0.1px" mt="$12" mb="$12" />
       <Box
         display="grid"
         gridTemplateColumns={{

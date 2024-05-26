@@ -81,17 +81,6 @@ const Overview = ({
           availablePrice={calcDollarValue(coin.base, balance, prices)}
         />
       </Box>
-
-      <Box mb={{ mobile: '$12', tablet: '$14' }}>
-        <StakingClaimHeader
-          symbol={coin.symbol}
-          rewardsAmount={Number(rewards.total) || 0}
-          stakedAmount={Number(staked) || 0}
-          onClaim={onClaimRewardClick}
-          isLoading={isClaiming}
-          isDisabled={!isGreaterThanZero(rewards.total)}
-        />
-      </Box>
     </>
   );
 };
