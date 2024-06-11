@@ -48,10 +48,28 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
       }
       return { gasPrice };
     },
+    signingCosmwasm: (chain) => {
+      let gasPrice;
+      try {
+        // TODO fix type error
+        // @ts-ignore
+        const feeToken = chain.fees?.fee_tokens[0];
+        const fee = `${feeToken?.average_gas_price || 0.025}${feeToken?.denom}`;
+        gasPrice = GasPrice.fromString(fee);
+      } catch (error) {
+        gasPrice = GasPrice.fromString('0.025uosmo');
+      }
+      return { gasPrice };
+    }
   };
 
   const filteredChains = chains.filter((el) => el.network_type === "testnet");
-  console.log(filteredChains[1]);
+
+  if (filteredChains[1]["chain_id"] === "constantine-3") {
+    filteredChains[1]["apis"]["rpc"][0]["address"] = 'https://rpc.constantine.archway.io'
+  }
+
+  console.log(filteredChains[1]["fees"]);
 
 
   return (

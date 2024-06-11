@@ -52,13 +52,6 @@
     "@keplr-wallet/crypto" "0.12.28"
     "semver" "^7.5.0"
 
-"@chain-registry/types@^0.17.0", "@chain-registry/types@>= 0.17", "@chain-registry/types@0.17.0":
-  "integrity" "sha512-lavACU4oDxioUy8lZOFZN0Vrr2qR+Dg2yEh/mkrPfOldcioavREXJou0elDyyXwq4pGLC5YQ+IISCtQ4Du0bdw=="
-  "resolved" "https://registry.npmjs.org/@chain-registry/types/-/types-0.17.0.tgz"
-  "version" "0.17.0"
-  dependencies:
-    "@babel/runtime" "^7.21.0"
-
 "@chain-registry/types@^0.41.3":
   "integrity" "sha512-LeW2nXd0dmnI+TC4L2xC3RNooUthUfou1yFcdsinSW6EP9qEwo2BwwnWWAcMG+dsPvXfM4AfmisVBrxbX2OKqw=="
   "resolved" "https://registry.npmjs.org/@chain-registry/types/-/types-0.41.4.tgz"
@@ -68,6 +61,18 @@
   "integrity" "sha512-b5WEsm0tGLW+ncJ5p/ZmsWqMxBzdrFeofBQAXH1id0BycbFU9LIsjoUmssSOCwkrDdWbno19HwJ2yrr/5VkMWQ=="
   "resolved" "https://registry.npmjs.org/@chain-registry/types/-/types-0.43.2.tgz"
   "version" "0.43.2"
+
+"@chain-registry/types@^0.43.5":
+  "integrity" "sha512-hFgkOD35ztxQfHnXEsNGLM0bQ775b6YS1Oioohj3HeJvt+ncrxxnGN/Pvacxoq5hBGA3wcGZD0GxUsPY5pSXHQ=="
+  "resolved" "https://registry.npmjs.org/@chain-registry/types/-/types-0.43.5.tgz"
+  "version" "0.43.5"
+
+"@chain-registry/types@>= 0.17", "@chain-registry/types@0.17.0":
+  "integrity" "sha512-lavACU4oDxioUy8lZOFZN0Vrr2qR+Dg2yEh/mkrPfOldcioavREXJou0elDyyXwq4pGLC5YQ+IISCtQ4Du0bdw=="
+  "resolved" "https://registry.npmjs.org/@chain-registry/types/-/types-0.17.0.tgz"
+  "version" "0.17.0"
+  dependencies:
+    "@babel/runtime" "^7.21.0"
 
 "@chain-registry/utils@^1.42.3", "@chain-registry/utils@^1.44.2":
   "integrity" "sha512-SPod3X31+flq3y194HDXRDPORn8bsIQa6UVvZambw4ElRg5cwG/ISoa2jz6xfDTeukTSSfUNBnScDHo1dHcJ+w=="
@@ -3924,13 +3929,12 @@
   "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001621.tgz"
   "version" "1.0.30001621"
 
-"chain-registry@^1.20.0":
-  "integrity" "sha512-kBeQVdopECXasauhaA+HiJNSB0UpzNmxtv5AvIpJBAZc3nuM2wzPxaHAiPz1OG5ifYwMraOkvPNxwOnXd1nZzw=="
-  "resolved" "https://registry.npmjs.org/chain-registry/-/chain-registry-1.20.0.tgz"
-  "version" "1.20.0"
+"chain-registry@^1.25.1":
+  "integrity" "sha512-95ciVE6hTik96q8hCNBMMZ+XGx7Dr7AWoUmuTzGtJisKIJfc0MexFN97Bxns+C5Dll7ylrWRWfytTbjgxOOU2Q=="
+  "resolved" "https://registry.npmjs.org/chain-registry/-/chain-registry-1.61.5.tgz"
+  "version" "1.61.5"
   dependencies:
-    "@babel/runtime" "^7.21.0"
-    "@chain-registry/types" "^0.17.0"
+    "@chain-registry/types" "^0.43.5"
 
 "chalk@^4.0.0":
   "integrity" "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="

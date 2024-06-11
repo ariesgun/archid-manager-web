@@ -7,6 +7,7 @@ import { Domain } from './Domain';
 import { useEffect, useState } from 'react';
 
 import { contracts } from "@/contracts/codegen"
+import { ArchidManagerQueryClient } from '@/contracts/codegen/ArchidManager.client';
 
 
 export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
@@ -44,16 +45,29 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
         let res = await queryClient.ownerOf({ includeExpired: false, tokenId: "testdomainx5.arch"})
         console.log(res);
 
-        res = await queryClient.tokens({ owner: "archway1xtsm2ezhklnvmvw08y6ugjtmd6stdsqngkfmfn"});
+        res = await queryClient.tokens({ owner: address});
         console.log("NFTS ", res);
 
         const archidAddr = "archway1lr8rstt40s697hqpedv2nvt27f4cuccqwvly9gnvuszxmcevrlns60xw4r";
+        const archidManagerAddr = "archway16xn3qhjvfdmp3tc4asdzy324xqgv9l7h8dk8mwmr70wxdjm6949s2wled7";
+
+        const archidManagerQueryClient = new ArchidManagerQueryClient(client, archidManagerAddr);
         const archidQueryClient = new ArchidRegistryQueryClient(client, archidAddr);
         let domains = await res.tokens.reduce(async (memo, domain) => {
             const results = await memo;
             let res = await archidQueryClient.resolveRecord({ name: domain });
+            let default_domain = await archidManagerQueryClient.queryDomainDefault({ address });
+            console.log("Default ", default_domain);
             res["domain"] = domain;
-            res["isDefault"] = false;
+            if (default_domain.domain_id === domain) {
+              res["isDefault"] = true;
+            } else {
+              res["isDefault"] = false;
+            }
+            
+            let autoRenew = await archidManagerQueryClient.queryRenewMap({ domainName: domain.split('.')[0] });
+            res["renew_info"] = autoRenew.renew_info;
+            
             return [...results, res];
         }, []);
         console.log(domains);

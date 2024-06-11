@@ -13,6 +13,9 @@ import * as _5 from "./Minter.message-composer";
 import * as _6 from "./ArchidRegistry.types";
 import * as _7 from "./ArchidRegistry.client";
 import * as _8 from "./ArchidRegistry.message-composer";
+import * as _9 from "./ArchidManager.types";
+import * as _10 from "./ArchidManager.client";
+import * as _11 from "./ArchidManager.message-composer";
 export namespace contracts {
   export const Sg721 = { ..._0,
     ..._1,
@@ -25,5 +28,9 @@ export namespace contracts {
   export const ArchidRegistry = { ..._6,
     ..._7,
     ..._8
+  };
+  export const ArchidManager = { ..._9,
+    ..._10,
+    ..._11
   };
 }
