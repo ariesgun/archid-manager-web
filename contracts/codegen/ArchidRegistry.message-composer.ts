@@ -8,7 +8,7 @@ import { Coin } from "@cosmjs/amino";
 import { MsgExecuteContractEncodeObject } from "@cosmjs/cosmwasm-stargate";
 import { MsgExecuteContract } from "cosmjs-types/cosmwasm/wasm/v1/tx";
 import { toUtf8 } from "@cosmjs/encoding";
-import { ExecuteMsg, Uint128, Addr, Config, MetaDataUpdateMsg, Account, Website, InstantiateMsg, QueryMsg, Schema } from "./ArchidRegistry.types";
+import { Addr, Uint128, InstantiateMsg, ExecuteMsg, Config, MetaDataUpdateMsg, Account, Website, QueryMsg, RecordExpirationResponse, ResolveAddressResponse, ResolveRecordResponse } from "./ArchidRegistry.types";
 export interface ArchidRegistryMsg {
   contractAddress: string;
   sender: string;

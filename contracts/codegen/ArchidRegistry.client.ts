@@ -6,7 +6,7 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import { ExecuteMsg, Uint128, Addr, Config, MetaDataUpdateMsg, Account, Website, InstantiateMsg, QueryMsg, Schema } from "./ArchidRegistry.types";
+import { Addr, Uint128, InstantiateMsg, ExecuteMsg, Config, MetaDataUpdateMsg, Account, Website, QueryMsg, RecordExpirationResponse, ResolveAddressResponse, ResolveRecordResponse } from "./ArchidRegistry.types";
 export interface ArchidRegistryReadOnlyInterface {
   contractAddress: string;
   resolveRecord: ({
@@ -24,7 +24,7 @@ export interface ArchidRegistryReadOnlyInterface {
   }: {
     address: Addr;
   }) => Promise<ResolveAddressResponse>;
-  config: () => Promise<ConfigResponse>;
+  config: () => Promise<Config>;
 }
 export class ArchidRegistryQueryClient implements ArchidRegistryReadOnlyInterface {
   client: CosmWasmClient;
@@ -72,7 +72,7 @@ export class ArchidRegistryQueryClient implements ArchidRegistryReadOnlyInterfac
       }
     });
   };
-  config = async (): Promise<ConfigResponse> => {
+  config = async (): Promise<Config> => {
     return this.client.queryContractSmart(this.contractAddress, {
       config: {}
     });

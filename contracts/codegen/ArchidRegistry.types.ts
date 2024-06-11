@@ -4,33 +4,37 @@
 * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
 */
 
+export type Addr = string;
+export type Uint128 = string;
+export interface InstantiateMsg {
+  admin: Addr;
+  base_cost: Uint128;
+  base_expiration: number;
+  cw721: Addr;
+  wallet: Addr;
+}
 export type ExecuteMsg = {
   register: {
     name: string;
-    [k: string]: unknown;
   };
 } | {
   withdraw: {
     amount: Uint128;
-    [k: string]: unknown;
   };
 } | {
   renew_registration: {
     name: string;
-    [k: string]: unknown;
   };
 } | {
   extend_subdomain_expiry: {
     domain: string;
     expiration: number;
     subdomain: string;
-    [k: string]: unknown;
   };
 } | {
   update_resolver: {
     name: string;
     new_resolver: Addr;
-    [k: string]: unknown;
   };
 } | {
   register_subdomain: {
@@ -39,42 +43,34 @@ export type ExecuteMsg = {
     new_owner: Addr;
     new_resolver: Addr;
     subdomain: string;
-    [k: string]: unknown;
   };
 } | {
   remove_subdomain: {
     domain: string;
     subdomain: string;
-    [k: string]: unknown;
   };
 } | {
   update_config: {
     config: Config;
-    [k: string]: unknown;
   };
 } | {
   update_user_domain_data: {
     metadata_update: MetaDataUpdateMsg;
     name: string;
-    [k: string]: unknown;
   };
 };
-export type Uint128 = string;
-export type Addr = string;
 export interface Config {
   admin: Addr;
   base_cost: Uint128;
   base_expiration: number;
   cw721: Addr;
   wallet: Addr;
-  [k: string]: unknown;
 }
 export interface MetaDataUpdateMsg {
   accounts?: Account[] | null;
   description?: string | null;
   image?: string | null;
   websites?: Website[] | null;
-  [k: string]: unknown;
 }
 export interface Account {
   account_type?: string | null;
@@ -89,37 +85,29 @@ export interface Website {
   verfication_hash?: string | null;
   [k: string]: unknown;
 }
-export interface InstantiateMsg {
-  admin: Addr;
-  base_cost: Uint128;
-  base_expiration: number;
-  cw721: Addr;
-  wallet: Addr;
-  [k: string]: unknown;
-}
 export type QueryMsg = {
   resolve_record: {
     name: string;
-    [k: string]: unknown;
   };
 } | {
   record_expiration: {
     name: string;
-    [k: string]: unknown;
   };
 } | {
   resolve_address: {
     address: Addr;
-    [k: string]: unknown;
   };
 } | {
-  config: {
-    [k: string]: unknown;
-  };
+  config: {};
 };
-export interface Schema {
-  execute: ExecuteMsg;
-  instantiate: InstantiateMsg;
-  query: QueryMsg;
-  [k: string]: unknown;
+export interface RecordExpirationResponse {
+  created: number;
+  expiration: number;
+}
+export interface ResolveAddressResponse {
+  names?: string[] | null;
+}
+export interface ResolveRecordResponse {
+  address?: string | null;
+  expiration: number;
 }

@@ -19,7 +19,7 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
 //   );
   
   const { address, getCosmWasmClient } = useChain(chainName);
-  const [ domains, setDomains ] = useState([]);
+  const [ domains, setDomains ] = useState<any[]>([]);
 
   useEffect(() => {
 
@@ -29,8 +29,7 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
 
         const {
           Sg721QueryClient,
-          Sg721Client,
-          Sg721MessageComposer
+          Sg721Client
         } = contracts.Sg721;
 
         const {
@@ -42,10 +41,10 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
         const sg721ContractAddr = "archway146htsfvftmq8fl26977w9xgdwmsptr2quuf7yyra4j0gttx32z3secq008";
         const queryClient = new Sg721QueryClient(client, sg721ContractAddr);
 
-        let res = await queryClient.ownerOf({ includeExpired: false, tokenId: "testdomainx5.arch"})
-        console.log(res);
+        let owner_of_res = await queryClient.ownerOf({ includeExpired: false, tokenId: "testdomainx5.arch"})
+        console.log(owner_of_res, address!);
 
-        res = await queryClient.tokens({ owner: address});
+        let res = await queryClient.tokens({ owner: address!});
         console.log("NFTS ", res);
 
         const archidAddr = "archway1lr8rstt40s697hqpedv2nvt27f4cuccqwvly9gnvuszxmcevrlns60xw4r";
@@ -53,10 +52,14 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
 
         const archidManagerQueryClient = new ArchidManagerQueryClient(client, archidManagerAddr);
         const archidQueryClient = new ArchidRegistryQueryClient(client, archidAddr);
-        let domains = await res.tokens.reduce(async (memo, domain) => {
+        let domains = await res.tokens.reduce<Promise<any[]>>(async (memo, domain, _index, _array) => {
             const results = await memo;
-            let res = await archidQueryClient.resolveRecord({ name: domain });
-            let default_domain = await archidManagerQueryClient.queryDomainDefault({ address });
+            let resolve_record_res = await archidQueryClient.resolveRecord({ name: domain });
+            let res : any = {
+              "address": resolve_record_res.address!,
+              "expiratopm": resolve_record_res.expiration
+            };
+            let default_domain = await archidManagerQueryClient.queryDomainDefault({ address: address! });
             console.log("Default ", default_domain);
             res["domain"] = domain;
             if (default_domain.domain_id === domain) {
@@ -69,7 +72,7 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
             res["renew_info"] = autoRenew.renew_info;
             
             return [...results, res];
-        }, []);
+        }, Promise.resolve([]));
         console.log(domains);
 
         setDomains(domains);

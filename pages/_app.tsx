@@ -64,11 +64,10 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
   };
 
   const filteredChains = chains.filter((el) => el.network_type === "testnet");
-
   if (filteredChains[1]["chain_id"] === "constantine-3") {
-    filteredChains[1]["apis"]["rpc"][0]["address"] = 'https://rpc.constantine.archway.io'
+    let rpcs = filteredChains[1]["apis"]!["rpc"]!;
+    rpcs[0]["address"] = 'https://rpc.constantine.archway.io'
   }
-
   console.log(filteredChains[1]["fees"]);
 
 

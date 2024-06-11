@@ -25,7 +25,7 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
     } = contracts.ArchidManager;
   
     const archidManagerAddr = "archway16xn3qhjvfdmp3tc4asdzy324xqgv9l7h8dk8mwmr70wxdjm6949s2wled7";
-    const sender = address;
+    const sender = address!;
     const client = new ArchidManagerClient(signingClient, sender, archidManagerAddr);
 
     // await client.mintDomain({ domainName: "hellotestarchid4" }, "auto", "mint a new registry", coins (
@@ -49,13 +49,12 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
 
     const {
         Sg721QueryClient,
-        Sg721Client,
-        Sg721MessageComposer
+        Sg721Client
       } = contracts.Sg721;
 
     const sg721ContractAddr = "archway146htsfvftmq8fl26977w9xgdwmsptr2quuf7yyra4j0gttx32z3secq008";
     const archidManagerAddr = "archway16xn3qhjvfdmp3tc4asdzy324xqgv9l7h8dk8mwmr70wxdjm6949s2wled7";
-    const sender = address;
+    const sender = address!;
 
     const sg721_client = new Sg721Client(signingClient, sender, sg721ContractAddr);
     await sg721_client.approve({spender: archidManagerAddr, tokenId: e.target.value}, "auto", "approve NFT");
@@ -79,13 +78,12 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
 
     const {
         Sg721QueryClient,
-        Sg721Client,
-        Sg721MessageComposer
+        Sg721Client
       } = contracts.Sg721;
 
     const sg721ContractAddr = "archway146htsfvftmq8fl26977w9xgdwmsptr2quuf7yyra4j0gttx32z3secq008";
     const archidManagerAddr = "archway16xn3qhjvfdmp3tc4asdzy324xqgv9l7h8dk8mwmr70wxdjm6949s2wled7";
-    const sender = address;
+    const sender = address!;
 
     const sg721_client = new Sg721Client(signingClient, sender, sg721ContractAddr);
     await sg721_client.approve({spender: archidManagerAddr, tokenId: e.target.value}, "auto", "approve NFT");
@@ -109,13 +107,12 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
 
     const {
         Sg721QueryClient,
-        Sg721Client,
-        Sg721MessageComposer
+        Sg721Client
       } = contracts.Sg721;
 
     const sg721ContractAddr = "archway146htsfvftmq8fl26977w9xgdwmsptr2quuf7yyra4j0gttx32z3secq008";
     const archidManagerAddr = "archway16xn3qhjvfdmp3tc4asdzy324xqgv9l7h8dk8mwmr70wxdjm6949s2wled7";
-    const sender = address;
+    const sender = address!;
 
     const client = new ArchidManagerClient(signingClient, sender, archidManagerAddr);
     // await client.cancelAutoRenew({domainName: e.target.value.split('.')[0]}, "auto", "Cancel auto renew domain");
