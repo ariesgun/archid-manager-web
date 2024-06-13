@@ -154,7 +154,7 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
                             }
                             {domain.renew_info.status == 999 && 
                                 <>
-                                    <p>An error occurred when trying to renew the domain.}</p>
+                                    <p>An error occurred when trying to renew the domain.</p>
                                     <p>Status: Failed 😵</p>
                                 </>
                             }
