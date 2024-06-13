@@ -13,11 +13,6 @@ export interface ArchidManagerMsg {
   contractAddress: string;
   sender: string;
   increment: (_funds?: Coin[]) => MsgExecuteContractEncodeObject;
-  reset: ({
-    count
-  }: {
-    count: number;
-  }, _funds?: Coin[]) => MsgExecuteContractEncodeObject;
   mintDomain: ({
     domainName
   }: {
@@ -33,13 +28,18 @@ export interface ArchidManagerMsg {
   }: {
     domainName: string;
   }, _funds?: Coin[]) => MsgExecuteContractEncodeObject;
-  cancelAutoRenew: (_funds?: Coin[]) => MsgExecuteContractEncodeObject;
+  cancelAutoRenew: ({
+    domainName
+  }: {
+    domainName: string;
+  }, _funds?: Coin[]) => MsgExecuteContractEncodeObject;
   setDefault: ({
     domainName
   }: {
     domainName: string;
   }, _funds?: Coin[]) => MsgExecuteContractEncodeObject;
   startCronJob: (_funds?: Coin[]) => MsgExecuteContractEncodeObject;
+  stopCronJob: (_funds?: Coin[]) => MsgExecuteContractEncodeObject;
   deposit: (_funds?: Coin[]) => MsgExecuteContractEncodeObject;
   withdraw: (_funds?: Coin[]) => MsgExecuteContractEncodeObject;
 }
@@ -51,13 +51,13 @@ export class ArchidManagerMsgComposer implements ArchidManagerMsg {
     this.sender = sender;
     this.contractAddress = contractAddress;
     this.increment = this.increment.bind(this);
-    this.reset = this.reset.bind(this);
     this.mintDomain = this.mintDomain.bind(this);
     this.renewDomain = this.renewDomain.bind(this);
     this.scheduleAutoRenew = this.scheduleAutoRenew.bind(this);
     this.cancelAutoRenew = this.cancelAutoRenew.bind(this);
     this.setDefault = this.setDefault.bind(this);
     this.startCronJob = this.startCronJob.bind(this);
+    this.stopCronJob = this.stopCronJob.bind(this);
     this.deposit = this.deposit.bind(this);
     this.withdraw = this.withdraw.bind(this);
   }
@@ -70,25 +70,6 @@ export class ArchidManagerMsgComposer implements ArchidManagerMsg {
         contract: this.contractAddress,
         msg: toUtf8(JSON.stringify({
           increment: {}
-        })),
-        funds: _funds
-      })
-    };
-  };
-  reset = ({
-    count
-  }: {
-    count: number;
-  }, _funds?: Coin[]): MsgExecuteContractEncodeObject => {
-    return {
-      typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
-      value: MsgExecuteContract.fromPartial({
-        sender: this.sender,
-        contract: this.contractAddress,
-        msg: toUtf8(JSON.stringify({
-          reset: {
-            count
-          }
         })),
         funds: _funds
       })
@@ -151,14 +132,20 @@ export class ArchidManagerMsgComposer implements ArchidManagerMsg {
       })
     };
   };
-  cancelAutoRenew = (_funds?: Coin[]): MsgExecuteContractEncodeObject => {
+  cancelAutoRenew = ({
+    domainName
+  }: {
+    domainName: string;
+  }, _funds?: Coin[]): MsgExecuteContractEncodeObject => {
     return {
       typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
       value: MsgExecuteContract.fromPartial({
         sender: this.sender,
         contract: this.contractAddress,
         msg: toUtf8(JSON.stringify({
-          cancel_auto_renew: {}
+          cancel_auto_renew: {
+            domain_name: domainName
+          }
         })),
         funds: _funds
       })
@@ -191,6 +178,19 @@ export class ArchidManagerMsgComposer implements ArchidManagerMsg {
         contract: this.contractAddress,
         msg: toUtf8(JSON.stringify({
           start_cron_job: {}
+        })),
+        funds: _funds
+      })
+    };
+  };
+  stopCronJob = (_funds?: Coin[]): MsgExecuteContractEncodeObject => {
+    return {
+      typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
+      value: MsgExecuteContract.fromPartial({
+        sender: this.sender,
+        contract: this.contractAddress,
+        msg: toUtf8(JSON.stringify({
+          stop_cron_job: {}
         })),
         funds: _funds
       })

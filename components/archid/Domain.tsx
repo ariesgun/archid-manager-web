@@ -19,21 +19,14 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
     let signingClient = await getSigningCosmWasmClient();
     
     const {
-        ArchidManagerClient,
-        ArchidManagerMsgComposer,
-        ArchidManagerQueryClient
+        ArchidManagerClient
     } = contracts.ArchidManager;
   
-    const archidManagerAddr = "archway16xn3qhjvfdmp3tc4asdzy324xqgv9l7h8dk8mwmr70wxdjm6949s2wled7";
     const sender = address!;
-    const client = new ArchidManagerClient(signingClient, sender, archidManagerAddr);
+    const client = new ArchidManagerClient(signingClient, sender, process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
 
-    // await client.mintDomain({ domainName: "hellotestarchid4" }, "auto", "mint a new registry", coins (
-    //     "1000000000000000000", "aconst"
-    // ));
-
-    // await client.setDefault(e.target.value);
     await client.setDefault({domainName: e.target.value}, "auto", "set default registry")
+    window.location.reload(); 
   };
 
   const onRenewClick = async (e: any) => {
@@ -42,27 +35,29 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
     let signingClient = await getSigningCosmWasmClient();
     
     const {
-        ArchidManagerClient,
-        ArchidManagerMsgComposer,
-        ArchidManagerQueryClient
+        ArchidManagerClient
     } = contracts.ArchidManager;
 
     const {
-        Sg721QueryClient,
         Sg721Client
       } = contracts.Sg721;
 
-    const sg721ContractAddr = "archway146htsfvftmq8fl26977w9xgdwmsptr2quuf7yyra4j0gttx32z3secq008";
-    const archidManagerAddr = "archway16xn3qhjvfdmp3tc4asdzy324xqgv9l7h8dk8mwmr70wxdjm6949s2wled7";
     const sender = address!;
 
-    const sg721_client = new Sg721Client(signingClient, sender, sg721ContractAddr);
-    await sg721_client.approve({spender: archidManagerAddr, tokenId: e.target.value}, "auto", "approve NFT");
+    const sg721_client = new Sg721Client(signingClient, sender, process.env.NEXT_PUBLIC_SG721_CONTRACT_ADDR!);
+    await sg721_client.approve(
+        {
+            spender: process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!,
+            tokenId: e.target.value
+        }, "auto", "approve NFT"
+    );
 
-    const client = new ArchidManagerClient(signingClient, sender, archidManagerAddr);
+    const client = new ArchidManagerClient(signingClient, sender, process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
     await client.renewDomain({domainName: e.target.value.split('.')[0]}, "auto", "renew domain", coins (
         "250000000000000000", "aconst"
     ))
+
+    window.location.reload(); 
   }
 
   const onAutoRenewClick = async (e: any) => {
@@ -71,27 +66,29 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
     let signingClient = await getSigningCosmWasmClient();
     
     const {
-        ArchidManagerClient,
-        ArchidManagerMsgComposer,
-        ArchidManagerQueryClient
+        ArchidManagerClient
     } = contracts.ArchidManager;
 
     const {
-        Sg721QueryClient,
         Sg721Client
       } = contracts.Sg721;
 
-    const sg721ContractAddr = "archway146htsfvftmq8fl26977w9xgdwmsptr2quuf7yyra4j0gttx32z3secq008";
-    const archidManagerAddr = "archway16xn3qhjvfdmp3tc4asdzy324xqgv9l7h8dk8mwmr70wxdjm6949s2wled7";
     const sender = address!;
 
-    const sg721_client = new Sg721Client(signingClient, sender, sg721ContractAddr);
-    await sg721_client.approve({spender: archidManagerAddr, tokenId: e.target.value}, "auto", "approve NFT");
+    const sg721_client = new Sg721Client(signingClient, sender, process.env.NEXT_PUBLIC_SG721_CONTRACT_ADDR!);
+    await sg721_client.approve(
+        {
+            spender: process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!,
+            tokenId: e.target.value
+        }, "auto", "approve NFT"
+    );
 
-    const client = new ArchidManagerClient(signingClient, sender, archidManagerAddr);
+    const client = new ArchidManagerClient(signingClient, sender, process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
     await client.scheduleAutoRenew({domainName: e.target.value.split('.')[0]}, "auto", "set auto renew domain", coins (
         "010000000000000000", "aconst"
     ))
+
+    window.location.reload(); 
   }
 
   const onCancelClick = async (e: any) => {
@@ -100,22 +97,13 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
     let signingClient = await getSigningCosmWasmClient();
     
     const {
-        ArchidManagerClient,
-        ArchidManagerMsgComposer,
-        ArchidManagerQueryClient
+        ArchidManagerClient
     } = contracts.ArchidManager;
 
-    const {
-        Sg721QueryClient,
-        Sg721Client
-      } = contracts.Sg721;
-
-    const sg721ContractAddr = "archway146htsfvftmq8fl26977w9xgdwmsptr2quuf7yyra4j0gttx32z3secq008";
-    const archidManagerAddr = "archway16xn3qhjvfdmp3tc4asdzy324xqgv9l7h8dk8mwmr70wxdjm6949s2wled7";
     const sender = address!;
-
-    const client = new ArchidManagerClient(signingClient, sender, archidManagerAddr);
-    // await client.cancelAutoRenew({domainName: e.target.value.split('.')[0]}, "auto", "Cancel auto renew domain");
+    const client = new ArchidManagerClient(signingClient, sender, process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
+    await client.cancelAutoRenew({domainName: e.target.value.split('.')[0]}, "auto", "cancel auto renew domain");
+    window.location.reload(); 
   }
 
   return (
@@ -171,13 +159,24 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
                     >
                         Renew
                     </button>
-                    <button 
-                        className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                        value={domain.domain}
-                        onClick={onAutoRenewClick}
-                    >
-                        Auto-Renew
-                    </button>
+                    {domain.renew_info !== null && domain.renew_info.status === 0 && 
+                        <button 
+                            className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                            value={domain.domain}
+                            onClick={onCancelClick}
+                        >
+                            Cancel Auto-Renew
+                        </button>
+                    }
+                    {domain.renew_info === null &&
+                        <button 
+                            className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                            value={domain.domain}
+                            onClick={onAutoRenewClick}
+                        >
+                            Auto-Renew
+                        </button>
+                    }
                 </div>
                 
             </div>

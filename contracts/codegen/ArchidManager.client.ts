@@ -89,11 +89,6 @@ export interface ArchidManagerInterface extends ArchidManagerReadOnlyInterface {
   contractAddress: string;
   sender: string;
   increment: (fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
-  reset: ({
-    count
-  }: {
-    count: number;
-  }, fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
   mintDomain: ({
     domainName
   }: {
@@ -109,13 +104,18 @@ export interface ArchidManagerInterface extends ArchidManagerReadOnlyInterface {
   }: {
     domainName: string;
   }, fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
-  cancelAutoRenew: (fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
+  cancelAutoRenew: ({
+    domainName
+  }: {
+    domainName: string;
+  }, fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
   setDefault: ({
     domainName
   }: {
     domainName: string;
   }, fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
   startCronJob: (fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
+  stopCronJob: (fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
   deposit: (fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
   withdraw: (fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
 }
@@ -130,13 +130,13 @@ export class ArchidManagerClient extends ArchidManagerQueryClient implements Arc
     this.sender = sender;
     this.contractAddress = contractAddress;
     this.increment = this.increment.bind(this);
-    this.reset = this.reset.bind(this);
     this.mintDomain = this.mintDomain.bind(this);
     this.renewDomain = this.renewDomain.bind(this);
     this.scheduleAutoRenew = this.scheduleAutoRenew.bind(this);
     this.cancelAutoRenew = this.cancelAutoRenew.bind(this);
     this.setDefault = this.setDefault.bind(this);
     this.startCronJob = this.startCronJob.bind(this);
+    this.stopCronJob = this.stopCronJob.bind(this);
     this.deposit = this.deposit.bind(this);
     this.withdraw = this.withdraw.bind(this);
   }
@@ -144,17 +144,6 @@ export class ArchidManagerClient extends ArchidManagerQueryClient implements Arc
   increment = async (fee: number | StdFee | "auto" = "auto", memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {
     return await this.client.execute(this.sender, this.contractAddress, {
       increment: {}
-    }, fee, memo, _funds);
-  };
-  reset = async ({
-    count
-  }: {
-    count: number;
-  }, fee: number | StdFee | "auto" = "auto", memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {
-    return await this.client.execute(this.sender, this.contractAddress, {
-      reset: {
-        count
-      }
     }, fee, memo, _funds);
   };
   mintDomain = async ({
@@ -190,9 +179,15 @@ export class ArchidManagerClient extends ArchidManagerQueryClient implements Arc
       }
     }, fee, memo, _funds);
   };
-  cancelAutoRenew = async (fee: number | StdFee | "auto" = "auto", memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {
+  cancelAutoRenew = async ({
+    domainName
+  }: {
+    domainName: string;
+  }, fee: number | StdFee | "auto" = "auto", memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {
     return await this.client.execute(this.sender, this.contractAddress, {
-      cancel_auto_renew: {}
+      cancel_auto_renew: {
+        domain_name: domainName
+      }
     }, fee, memo, _funds);
   };
   setDefault = async ({
@@ -209,6 +204,11 @@ export class ArchidManagerClient extends ArchidManagerQueryClient implements Arc
   startCronJob = async (fee: number | StdFee | "auto" = "auto", memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {
     return await this.client.execute(this.sender, this.contractAddress, {
       start_cron_job: {}
+    }, fee, memo, _funds);
+  };
+  stopCronJob = async (fee: number | StdFee | "auto" = "auto", memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      stop_cron_job: {}
     }, fee, memo, _funds);
   };
   deposit = async (fee: number | StdFee | "auto" = "auto", memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {

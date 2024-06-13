@@ -38,26 +38,17 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
             ArchidRegistryQueryClient
         } = contracts.ArchidRegistry;
 
-        const sg721ContractAddr = "archway146htsfvftmq8fl26977w9xgdwmsptr2quuf7yyra4j0gttx32z3secq008";
-        const queryClient = new Sg721QueryClient(client, sg721ContractAddr);
-
-        let owner_of_res = await queryClient.ownerOf({ includeExpired: false, tokenId: "testdomainx5.arch"})
-        console.log(owner_of_res, address!);
+        const queryClient = new Sg721QueryClient(client, process.env.NEXT_PUBLIC_SG721_CONTRACT_ADDR!);
 
         let res = await queryClient.tokens({ owner: address!});
-        console.log("NFTS ", res);
-
-        const archidAddr = "archway1lr8rstt40s697hqpedv2nvt27f4cuccqwvly9gnvuszxmcevrlns60xw4r";
-        const archidManagerAddr = "archway16xn3qhjvfdmp3tc4asdzy324xqgv9l7h8dk8mwmr70wxdjm6949s2wled7";
-
-        const archidManagerQueryClient = new ArchidManagerQueryClient(client, archidManagerAddr);
-        const archidQueryClient = new ArchidRegistryQueryClient(client, archidAddr);
+        const archidManagerQueryClient = new ArchidManagerQueryClient(client, process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
+        const archidQueryClient = new ArchidRegistryQueryClient(client, process.env.NEXT_PUBLIC_ARCHID_REGISTRY_ADDR!);
         let domains = await res.tokens.reduce<Promise<any[]>>(async (memo, domain, _index, _array) => {
             const results = await memo;
             let resolve_record_res = await archidQueryClient.resolveRecord({ name: domain });
             let res : any = {
               "address": resolve_record_res.address!,
-              "expiratopm": resolve_record_res.expiration
+              "expiration": resolve_record_res.expiration
             };
             let default_domain = await archidManagerQueryClient.queryDomainDefault({ address: address! });
             console.log("Default ", default_domain);
@@ -73,7 +64,7 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
             
             return [...results, res];
         }, Promise.resolve([]));
-        console.log(domains);
+        console.log("A ", domains);
 
         setDomains(domains);
 

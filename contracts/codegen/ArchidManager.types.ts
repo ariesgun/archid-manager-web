@@ -14,10 +14,6 @@ export interface InstantiateMsg {
 export type ExecuteMsg = {
   increment: {};
 } | {
-  reset: {
-    count: number;
-  };
-} | {
   mint_domain: {
     domain_name: string;
   };
@@ -30,13 +26,17 @@ export type ExecuteMsg = {
     domain_name: string;
   };
 } | {
-  cancel_auto_renew: {};
+  cancel_auto_renew: {
+    domain_name: string;
+  };
 } | {
   set_default: {
     domain_name: string;
   };
 } | {
   start_cron_job: {};
+} | {
+  stop_cron_job: {};
 } | {
   deposit: {};
 } | {
@@ -66,6 +66,7 @@ export interface State {
   callback_height: number;
   count: number;
   owner: Addr;
+  renew_status: number;
   status: number;
   [k: string]: unknown;
 }
@@ -93,6 +94,7 @@ export interface RenewInfo {
   block_idx: number;
   callback_height: number;
   domain_id: string;
+  err_message?: string | null;
   execute_msg: Binary;
   owner: Addr;
   status: number;
