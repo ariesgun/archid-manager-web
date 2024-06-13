@@ -38,7 +38,8 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
             ArchidRegistryQueryClient
         } = contracts.ArchidRegistry;
 
-        console.log("HIHI ", process.env);
+        console.log("HIHI ", process.env.NEXT_PUBLIC_SG721_CONTRACT_ADDR);
+        console.log("HIHI2 ", process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR);
 
         const queryClient = new Sg721QueryClient(client, process.env.NEXT_PUBLIC_SG721_CONTRACT_ADDR!);
 
