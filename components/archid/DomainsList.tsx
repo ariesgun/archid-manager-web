@@ -38,6 +38,8 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
             ArchidRegistryQueryClient
         } = contracts.ArchidRegistry;
 
+        console.log("HIHI ", process.env);
+
         const queryClient = new Sg721QueryClient(client, process.env.NEXT_PUBLIC_SG721_CONTRACT_ADDR!);
 
         let res = await queryClient.tokens({ owner: address!});
