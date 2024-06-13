@@ -115,7 +115,7 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
                         <h1 className="text-3xl font-bold underline">{domain.domain}</h1>
                     </div>
                     <div className="">
-                        <h1 className="text-lg">{domain.isDefault ? "Default" : ""}</h1>
+                        <h1 className="text-lg font-bold">{domain.isDefault ? "⭐ Default" : ""}</h1>
                     </div>
                 </div>
                 <div className="flex flex-row w-full">
@@ -137,10 +137,27 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
                             {domain.renew_info.status === 0 && 
                                 <>
                                     <p>Scheduled to be renewed in {domain.renew_info.block_idx * 7} days from registered at block height {domain.renew_info.callback_height}</p>
-                                    <p>Status: Pending </p>
+                                    <p>Status: Pending ⌛</p>
                                 </>
                             }
-                            {domain.renew_info.status !== 0 && <p>The domain has been successfully renewed at block height {domain.renew_info.status}</p>}
+                            {domain.renew_info.status == 1 && 
+                                <>
+                                    <p>The domain has been successfully renewed at block height {domain.renew_info.status}</p>
+                                    <p>Status: Done ✅</p>
+                                </>
+                            }
+                            {domain.renew_info.status == 2 && 
+                                <>
+                                    <p>The domain auto-renewal has been cancelled.</p>
+                                    <p>Status: Cancelled ❌</p>
+                                </>
+                            }
+                            {domain.renew_info.status == 999 && 
+                                <>
+                                    <p>An error occurred when trying to renew the domain.}</p>
+                                    <p>Status: Failed 😵</p>
+                                </>
+                            }
                         </div>
                     </div>
                 }

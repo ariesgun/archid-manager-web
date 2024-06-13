@@ -68,8 +68,6 @@ function CreateCosmosApp({ Component, pageProps }: AppProps) {
     let rpcs = filteredChains[1]["apis"]!["rpc"]!;
     rpcs[0]["address"] = 'https://rpc.constantine.archway.io'
   }
-  console.log(filteredChains[1]["fees"]);
-
 
   return (
     <ThemeProvider>

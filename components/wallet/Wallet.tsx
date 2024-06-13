@@ -56,8 +56,6 @@ export const WalletSection = ({
     icon: chainInfo.logo_URIs?.png
   };
 
-  console.log("Chain: ", chain);
-
   const chainOptions = useMemo(
     () =>
       chainRecords.map((chainRecord) => {

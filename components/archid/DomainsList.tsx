@@ -25,8 +25,6 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
 
     getCosmWasmClient()
       .then(async (client) => {
-        console.log("Client ", client);
-
         const {
           Sg721QueryClient,
           Sg721Client
@@ -37,9 +35,6 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
             ArchidRegistryMsgComposer,
             ArchidRegistryQueryClient
         } = contracts.ArchidRegistry;
-
-        console.log("HIHI ", process.env.NEXT_PUBLIC_SG721_CONTRACT_ADDR);
-        console.log("HIHI2 ", process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR);
 
         const queryClient = new Sg721QueryClient(client, process.env.NEXT_PUBLIC_SG721_CONTRACT_ADDR!);
 
@@ -54,7 +49,6 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
               "expiration": resolve_record_res.expiration
             };
             let default_domain = await archidManagerQueryClient.queryDomainDefault({ address: address! });
-            console.log("Default ", default_domain);
             res["domain"] = domain;
             if (default_domain.domain_id === domain) {
               res["isDefault"] = true;
@@ -67,7 +61,7 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
             
             return [...results, res];
         }, Promise.resolve([]));
-        console.log("A ", domains);
+        console.log("All domains ", domains);
 
         setDomains(domains);
 

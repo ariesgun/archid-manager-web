@@ -62,8 +62,6 @@ const Overview = ({
     setIsClaiming(false);
   };
 
-  console.log("Hello ", chain);
-
   return (
     <>
       <Box mb={{ mobile: '$8', tablet: '$12' }}>
