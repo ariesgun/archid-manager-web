@@ -7,6 +7,7 @@
 export type Addr = string;
 export interface InstantiateMsg {
   archid_registry_addr: Addr;
+  cost_per_year: string;
   count: number;
   cw721_archid_addr: Addr;
   denom: string;
