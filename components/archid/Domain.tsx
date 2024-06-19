@@ -59,7 +59,10 @@ export const Domain = ({ chainName, domain, demo }: { chainName: ChainName, doma
         }, "auto", "approve NFT"
     );
 
-    const client = new ArchidManagerClient(signingClient, sender, process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
+    const client = new ArchidManagerClient(
+        signingClient, 
+        sender, 
+        demo ? process.env.NEXT_PUBLIC_ARCHID_MANAGER_DEMO_ADDR! : process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
     client.renewDomain({domainName: e.target.value.split('.')[0]}, "auto", "renew domain", coins (
         "250000000000000000", "aconst"
     )).then(() => {
@@ -130,7 +133,7 @@ export const Domain = ({ chainName, domain, demo }: { chainName: ChainName, doma
     }).catch((e) => {
         alert(e)
     })
-  }
+  };
 
   return (
     <>
@@ -162,7 +165,7 @@ export const Domain = ({ chainName, domain, demo }: { chainName: ChainName, doma
                         <div className="flex flex-row w-full gap-x-4 justify-between">
                             {domain.renew_info.status === 0 && 
                                 <>
-                                    <p>Scheduled to be renewed in {domain.renew_info.block_idx * 7} days since scheduled at block height {domain.renew_info.callback_height}</p>
+                                    <p>Scheduled to be renewed at block height {domain.renew_info.callback_height}</p>
                                     <p>Status: Pending ⌛</p>
                                 </>
                             }
