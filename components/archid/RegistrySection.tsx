@@ -5,8 +5,9 @@ import { Box, Divider, Spinner, Text } from '@interchain-ui/react';
 import Overview from './Overview';
 import { DomainsList } from './DomainsList';
 import { useStakingData, useValidatorLogos } from '@/hooks';
+import { NewDomain } from './NewDomain';
 
-export const RegistrySection = ({ chainName }: { chainName: ChainName }) => {
+export const RegistrySection = ({ chainName, demo }: { chainName: ChainName, demo: boolean }) => {
   const { isWalletConnected } = useChain(chainName);
   const { data, isLoading, refetch } = useStakingData(chainName);
   const { data: logos, isLoading: isFetchingLogos } = useValidatorLogos(
@@ -49,8 +50,16 @@ export const RegistrySection = ({ chainName }: { chainName: ChainName }) => {
           
           <Divider height="0.1px" mt="$12" mb="$14" />
 
+          <NewDomain 
+            chainName={chainName}
+            demo={demo}
+          />
+        
+          <Divider height="0.1px" mt="$12" mb="$14" />
+
           <DomainsList
             chainName={chainName}
+            demo={demo}
           />
 
           

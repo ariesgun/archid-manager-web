@@ -10,7 +10,7 @@ import { contracts } from "@/contracts/codegen"
 import { ArchidManagerQueryClient } from '@/contracts/codegen/ArchidManager.client';
 
 
-export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
+export const DomainsList = ({ chainName, demo }: { chainName: ChainName, demo: boolean }) => {
   const { isWalletConnected } = useChain(chainName);
 //   const { data, isLoading, refetch } = useStakingData(chainName);
 //   const { data: logos, isLoading: isFetchingLogos } = useValidatorLogos(
@@ -39,11 +39,14 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
         const queryClient = new Sg721QueryClient(client, process.env.NEXT_PUBLIC_SG721_CONTRACT_ADDR!);
 
         let res = await queryClient.tokens({ owner: address!});
-        const archidManagerQueryClient = new ArchidManagerQueryClient(client, process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
+        const archidManagerQueryClient = new ArchidManagerQueryClient(
+            client, 
+            demo ? process.env.NEXT_PUBLIC_ARCHID_MANAGER_DEMO_ADDR! : process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
         const archidQueryClient = new ArchidRegistryQueryClient(client, process.env.NEXT_PUBLIC_ARCHID_REGISTRY_ADDR!);
         let domains = await res.tokens.reduce<Promise<any[]>>(async (memo, domain, _index, _array) => {
             const results = await memo;
             let resolve_record_res = await archidQueryClient.resolveRecord({ name: domain });
+            console.log(resolve_record_res)
             let res : any = {
               "address": resolve_record_res.address!,
               "expiration": resolve_record_res.expiration
@@ -70,13 +73,14 @@ export const DomainsList = ({ chainName }: { chainName: ChainName }) => {
 
   return (
     <>
-        <h1 className='text-3xl pb-4'>My Domains</h1>
+        <h1 className='text-3xl font-semibold text-gray-900 leading-7 pb-6'>My Domains</h1>
         <div className="flex flex-col gap-y-6">
             {domains && domains.map((domain, idx) => (
                 <Domain
                     key={idx}
                     chainName={chainName}
                     domain={domain}
+                    demo={demo}
                 />
             ))}
         </div>

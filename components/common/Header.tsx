@@ -42,21 +42,6 @@ export function Header() {
         >
           Archway ID Manager
         </Text>
-        <Text as="h2" fontWeight="$bold">
-          <Text
-            as="span"
-            fontSize={{ mobile: '$3xl', tablet: '$8xl', desktop: '$8xl' }}
-          >
-            Welcome to&nbsp;
-          </Text>
-          <Text
-            as="span"
-            fontSize={{ mobile: '$3xl', tablet: '$8xl', desktop: '$8xl' }}
-            color={useColorModeValue('$primary500', '$primary200')}
-          >
-            {stacks.join(' + ')}
-          </Text>
-        </Text>
       </Box>
     </>
   );

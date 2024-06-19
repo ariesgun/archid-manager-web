@@ -5,7 +5,7 @@ import { ChainName } from 'cosmos-kit';
 import { useState } from 'react';
 
 
-export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: any }) => {
+export const Domain = ({ chainName, domain, demo }: { chainName: ChainName, domain: any, demo: boolean }) => {
   const { address, isWalletConnected } = useChain(chainName);
 
   const d = new Date(0);
@@ -23,10 +23,17 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
     } = contracts.ArchidManager;
   
     const sender = address!;
-    const client = new ArchidManagerClient(signingClient, sender, process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
+    const client = new ArchidManagerClient(
+        signingClient, 
+        sender, 
+        demo ? process.env.NEXT_PUBLIC_ARCHID_MANAGER_DEMO_ADDR! : process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
 
-    await client.setDefault({domainName: e.target.value}, "auto", "set default registry")
-    window.location.reload(); 
+    client.setDefault({domainName: e.target.value}, "auto", "set default registry")
+    .then(() => {
+        window.location.reload(); 
+    }).catch((e) => {
+        alert(e)
+    })
   };
 
   const onRenewClick = async (e: any) => {
@@ -47,17 +54,20 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
     const sg721_client = new Sg721Client(signingClient, sender, process.env.NEXT_PUBLIC_SG721_CONTRACT_ADDR!);
     await sg721_client.approve(
         {
-            spender: process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!,
+            spender: demo ? process.env.NEXT_PUBLIC_ARCHID_MANAGER_DEMO_ADDR! : process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!,
             tokenId: e.target.value
         }, "auto", "approve NFT"
     );
 
     const client = new ArchidManagerClient(signingClient, sender, process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
-    await client.renewDomain({domainName: e.target.value.split('.')[0]}, "auto", "renew domain", coins (
+    client.renewDomain({domainName: e.target.value.split('.')[0]}, "auto", "renew domain", coins (
         "250000000000000000", "aconst"
-    ))
+    )).then(() => {
+        window.location.reload(); 
+    }).catch((e) => {
+        alert(e)
+    })
 
-    window.location.reload(); 
   }
 
   const onAutoRenewClick = async (e: any) => {
@@ -78,17 +88,24 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
     const sg721_client = new Sg721Client(signingClient, sender, process.env.NEXT_PUBLIC_SG721_CONTRACT_ADDR!);
     await sg721_client.approve(
         {
-            spender: process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!,
+            spender: demo ? process.env.NEXT_PUBLIC_ARCHID_MANAGER_DEMO_ADDR! : process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!,
             tokenId: e.target.value
         }, "auto", "approve NFT"
     );
 
-    const client = new ArchidManagerClient(signingClient, sender, process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
-    await client.scheduleAutoRenew({domainName: e.target.value.split('.')[0]}, "auto", "set auto renew domain", coins (
-        "010000000000000000", "aconst"
-    ))
+    const client = new ArchidManagerClient(
+        signingClient, 
+        sender, 
+        demo ? process.env.NEXT_PUBLIC_ARCHID_MANAGER_DEMO_ADDR! : process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
 
-    window.location.reload(); 
+    client.scheduleAutoRenew({domainName: e.target.value.split('.')[0]}, "auto", "set auto renew domain", coins (
+        "400000000000000000", "aconst"
+    )).then(() => {
+        window.location.reload(); 
+    }).catch((e) => {
+        alert(e)
+    })
+
   }
 
   const onCancelClick = async (e: any) => {
@@ -101,9 +118,18 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
     } = contracts.ArchidManager;
 
     const sender = address!;
-    const client = new ArchidManagerClient(signingClient, sender, process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
-    await client.cancelAutoRenew({domainName: e.target.value.split('.')[0]}, "auto", "cancel auto renew domain");
-    window.location.reload(); 
+    const client = new ArchidManagerClient(
+        signingClient, 
+        sender, 
+        demo ? process.env.NEXT_PUBLIC_ARCHID_MANAGER_DEMO_ADDR! : process.env.NEXT_PUBLIC_ARCHID_MANAGER_ADDR!);
+
+
+    client.cancelAutoRenew({domainName: e.target.value.split('.')[0]}, "auto", "cancel auto renew domain")
+    .then(() => {
+        window.location.reload(); 
+    }).catch((e) => {
+        alert(e)
+    })
   }
 
   return (
@@ -112,7 +138,7 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
             <div className="flex flex-col w-full gap-y-2">
                 <div className="flex flex-row w-full gap-x-2">
                     <div className="grow">
-                        <h1 className="text-3xl font-bold underline">{domain.domain}</h1>
+                        <h1 className="text-3xl font-semibold">{domain.domain}</h1>
                     </div>
                     <div className="">
                         <h1 className="text-lg font-bold">{domain.isDefault ? "⭐ Default" : ""}</h1>
@@ -120,7 +146,7 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
                 </div>
                 <div className="flex flex-row w-full">
                     <div>
-                        <p>Address: {domain.address}</p>
+                        <p>Owner: {domain.address}</p>
                     </div>
                 </div>
                 <div className="flex flex-row w-full">
@@ -136,13 +162,13 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
                         <div className="flex flex-row w-full gap-x-4 justify-between">
                             {domain.renew_info.status === 0 && 
                                 <>
-                                    <p>Scheduled to be renewed in {domain.renew_info.block_idx * 7} days from registered at block height {domain.renew_info.callback_height}</p>
+                                    <p>Scheduled to be renewed in {domain.renew_info.block_idx * 7} days since scheduled at block height {domain.renew_info.callback_height}</p>
                                     <p>Status: Pending ⌛</p>
                                 </>
                             }
                             {domain.renew_info.status == 1 && 
                                 <>
-                                    <p>The domain has been successfully renewed at block height {domain.renew_info.status}</p>
+                                    <p>The domain has been successfully renewed at block height {domain.renew_info.callback_height}</p>
                                     <p>Status: Done ✅</p>
                                 </>
                             }
@@ -185,7 +211,7 @@ export const Domain = ({ chainName, domain }: { chainName: ChainName, domain: an
                             Cancel Auto-Renew
                         </button>
                     }
-                    {domain.renew_info === null &&
+                    {(domain.renew_info === null || domain.renew_info.status >= 1) &&
                         <button 
                             className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
                             value={domain.domain}

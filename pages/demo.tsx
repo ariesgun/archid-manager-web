@@ -4,7 +4,7 @@ import { defaultChainName } from '@/config';
 import { Layout, WalletSection } from '@/components';
 import { RegistrySection } from '@/components/archid/RegistrySection';
 
-export default function ArchwayTestnet() {
+export default function Demo() {
   return (
     <Layout>
       <WalletSection isMultiChain={false} />
@@ -13,7 +13,7 @@ export default function ArchwayTestnet() {
       {/* Type error: This JSX tag's 'children' prop expects a single child of type 'ReactNode', but multiple children were provided. */}
       {/* @ts-ignore */}
       <NoSSR>
-        <RegistrySection chainName={defaultChainName} demo={false}/>
+        <RegistrySection chainName={defaultChainName} demo={true}/>
       </NoSSR>
     </Layout>
   );
